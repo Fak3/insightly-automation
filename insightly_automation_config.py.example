@@ -1,0 +1,7 @@
+# INSIGHTLY_API_KEY can be obtained on user settings page.
+INSIGHTLY_API_KEY = ''
+
+
+LOG_FILE = '/var/log/insightly_automation.log'
+
+LOG_LEVEL = 'INFO'
