@@ -1,6 +1,10 @@
 # INSIGHTLY_API_KEY can be obtained on user settings page.
 INSIGHTLY_API_KEY = ''
 
+# LEAD_TAG_ONLY - If set in the config, only leads with that tag will be processed by
+# the script, i.e. their linked contacts and orgs may be modified.
+# Example:
+# LEAD_TAG_ONLY = 'autotitle'
 
 LOG_FILE = '/var/log/insightly_automation.log'
 

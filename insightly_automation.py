@@ -100,6 +100,7 @@ def configure():
 
     try:
         from insightly_automation_config import INSIGHTLY_API_KEY
+        from insightly_automation_config import LEAD_TAG_ONLY
     except Exception as e:
         logging.critical('Please set required config varialble in insightly_automation_config.py:\n%s', str(e))
         raise
@@ -128,7 +129,7 @@ def fix_leads():
     #orgs = insightly_get("/organisations", insightly_auth)
     #db['last_poll'] = now
 
-    fields = insightly_get("/CustomFields", insightly_auth)
+    fields = insightly_get('/CustomFields', insightly_auth)
     titles = [x for x in fields if x['FIELD_FOR'] == 'CONTACT' and 'title' in x['FIELD_NAME'].lower()]
 
     if len(titles) > 1:
@@ -140,9 +141,19 @@ def fix_leads():
 
     logging.info('%d leads found.' % len(leads))
 
+    tag_filter = getattr(config, 'LEAD_TAG_ONLY', None)
+
     for lead in leads:
         if not lead['CONVERTED']:
             continue
+
+        if tag_filter:
+            for tag in lead['TAGS']:
+                if tag['TAG_NAME'] == tag_filter:
+                    break
+            else:
+                # No matching tag found, skip this lead.
+                continue
 
         ##if lead['LEAD_ID'] in db['fixed_leads']:
             ##continue
